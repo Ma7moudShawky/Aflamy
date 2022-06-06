@@ -261,4 +261,4 @@ D:\Work\Again\MVC\Aflamy\Aflamy\obj\Debug\net6.0\refint\Aflamy.dll
 D:\Work\Again\MVC\Aflamy\Aflamy\obj\Debug\net6.0\Aflamy.pdb
 D:\Work\Again\MVC\Aflamy\Aflamy\obj\Debug\net6.0\Aflamy.genruntimeconfig.cache
 D:\Work\Again\MVC\Aflamy\Aflamy\obj\Debug\net6.0\ref\Aflamy.dll
-D:\Work\Again\MVC\Aflamy\Aflamy\bin\Debug\net6.0\web.config
+D:\Work\Again\MVC\Aflamy\Aflamy\bin\Debug\net6.0\libman.json

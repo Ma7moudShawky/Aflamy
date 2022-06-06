@@ -33,7 +33,7 @@ namespace Aflamy.Controllers
                 CategoryService.Add(category);
                 return RedirectToAction("Details", new { id = category.CategoryId });
             }
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
 
         }
         [HttpGet]
@@ -68,7 +68,7 @@ namespace Aflamy.Controllers
                 return RedirectToAction("List"); ;
 
             }
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

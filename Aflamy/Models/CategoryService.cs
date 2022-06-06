@@ -37,7 +37,7 @@ namespace Aflamy.Models
 
         public IEnumerable<Category> GetAll()
         {
-            return AppDBContext.Categories.ToList();
+            return AppDBContext.Categories.Include(c=>c.Movies).ToList();
         }
 
         public void Update(Category category)

@@ -10,6 +10,7 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("MyConnection")));
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IMoviesService, MoviesService>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
