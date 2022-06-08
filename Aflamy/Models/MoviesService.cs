@@ -11,6 +11,8 @@ namespace Aflamy.Models
 
         public AppDBContext AppDBContext { get; }
 
+       
+
         public void Add(Movie movie)
         {
             if (movie != null)
@@ -33,7 +35,7 @@ namespace Aflamy.Models
 
         public Movie Get(int id)
         {
-            return AppDBContext.Movies.FirstOrDefault(c => c.MovieID == id);
+            return AppDBContext.Movies.Include(m=>m.MovieCategries).FirstOrDefault(c => c.MovieID == id);
         }
 
         public IEnumerable<Movie> GetAll()

@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create"> 
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.AddedMovie.MovieName" class="control-label"></label>
@@ -29,8 +29,11 @@
                 <span asp-validation-for="@Model.AddedMovie.Poster" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.ListBoxFor(m=>m.SelectedCategoriesIds,Model.AllCategories,new {style= "width:200px"})
+                <label asp-for="@Model.SelectedCategoriesIds" class="control-label"></label>
+                <br />
+                @Html.DropDownListFor(m=>m.SelectedCategoriesIds,Model.AllCategories,new {style= "width:400px", multiple = "multiple"})
             </div>
+            <span asp-validation-for="@Model.SelectedCategoriesIds" class="text-danger"></span>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -39,9 +42,11 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="List">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

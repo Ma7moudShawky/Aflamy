@@ -1,4 +1,5 @@
-﻿namespace Aflamy.Models
+﻿
+namespace Aflamy.Models
 {
     public interface IMoviesService
     {

@@ -44,11 +44,7 @@ namespace Aflamy.Controllers
         public IActionResult Create()
         {
             AddMovieViewModel addMovieViewModel = new AddMovieViewModel();
-            foreach (var category in CategoryService.GetAll())
-            {
-                addMovieViewModel.AllCategories.Add(new SelectListItem { Text = category.CategoryName, Value = category.CategoryId.ToString() });
-            }
-
+            addMovieViewModel.AllCategories = CategoryService.GetSelectListItems();
             return View(addMovieViewModel);
         }
 
@@ -59,10 +55,7 @@ namespace Aflamy.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var categoryID in model.SelectedCategoriesIds)
-                {
-                    model.AddedMovie.MovieCategries.Add(CategoryService.Get(categoryID));
-                }
+                model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
                 MoviesService.Add(model.AddedMovie);
                 return RedirectToAction(nameof(List));
             }
@@ -78,24 +71,31 @@ namespace Aflamy.Controllers
             {
                 return NotFound();
             }
+            AddMovieViewModel movieViewModel = new AddMovieViewModel();
+            movieViewModel.AddedMovie = MoviesService.Get(id);
+            movieViewModel.AllCategories = CategoryService.GetSelectListItems();
+            movieViewModel.SelectedCategoriesIds = movieViewModel.AddedMovie.MovieCategries.Select(c => c.CategoryId).ToList();
 
-            var Updatedmovie = MoviesService.Get(id);
+            foreach (Category category in movieViewModel.AddedMovie.MovieCategries)
+            {
+                movieViewModel.AllCategories.FirstOrDefault(c => c.Text == category.CategoryName).Selected=true;
+            }
 
-            return View(Updatedmovie);
+            return View(movieViewModel);
         }
 
         // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind("MovieID,MovieName,Description,Poster")] Movie movie)
+        public IActionResult Edit(AddMovieViewModel model)
         {
 
-            if (ModelState.IsValid)
-            {
-                MoviesService.Update(movie);
-                return RedirectToAction(nameof(List));
-            }
-            return View(movie);
+            //if (ModelState.IsValid)
+            //{
+            //    MoviesService.Update(movie);
+            //    return RedirectToAction(nameof(List));
+            //}
+            return View();
         }
 
         // GET: Movies/Delete/5

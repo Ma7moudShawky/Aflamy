@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aflamy.Models
 {
@@ -37,7 +38,28 @@ namespace Aflamy.Models
 
         public IEnumerable<Category> GetAll()
         {
-            return AppDBContext.Categories.Include(c=>c.Movies).ToList();
+            return AppDBContext.Categories.Include(c => c.Movies).OrderBy(c => c.CategoryName).ToList();
+        }
+
+        public List<Category> GetCategoriesListByID(List<int> IDs)
+        {
+            List<Category> categories = new List<Category>();
+            foreach (var categoryID in IDs)
+            {
+                categories.Add(Get(categoryID));
+            }
+            return categories;
+        }
+
+        public List<SelectListItem> GetSelectListItems()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (var category in GetAll())
+            {
+                list.Add(new SelectListItem { Text = category.CategoryName, Value = category.CategoryId.ToString()});
+            }
+            return list;
         }
 
         public void Update(Category category)
