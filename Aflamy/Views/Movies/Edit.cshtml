@@ -32,7 +32,7 @@
                 <label asp-for="@Model.SelectedCategoriesIds" class="control-label"></label>
                 <br />
                 @*@Html.ListBoxFor(m=>m.SelectedCategoriesIds,Model.AllCategories,new {@class = "form-control" })*@
-                @Html.DropDownListFor(m=>m.SelectedCategoriesIds,Model.AllCategories,new {@class = "form-control" , multiple = "multiple" })
+                @Html.DropDownList("SelectedCategoriesIds",Model.AllCategories,new {@class = "form-control" , multiple = "multiple" })
                 <span asp-validation-for="@Model.SelectedCategoriesIds" class="text-danger"></span>
             </div>
             <br />

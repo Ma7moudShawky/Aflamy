@@ -74,7 +74,6 @@ namespace Aflamy.Controllers
             AddMovieViewModel movieViewModel = new AddMovieViewModel();
             movieViewModel.AddedMovie = MoviesService.Get(id);
             movieViewModel.AllCategories = CategoryService.GetSelectListItems();
-            movieViewModel.SelectedCategoriesIds = movieViewModel.AddedMovie.MovieCategries.Select(c => c.CategoryId).ToList();
 
             foreach (Category category in movieViewModel.AddedMovie.MovieCategries)
             {
@@ -95,7 +94,7 @@ namespace Aflamy.Controllers
             //    MoviesService.Update(movie);
             //    return RedirectToAction(nameof(List));
             //}
-            return View();
+            return View(model);
         }
 
         // GET: Movies/Delete/5
