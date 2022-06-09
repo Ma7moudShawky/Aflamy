@@ -51,17 +51,6 @@ namespace Aflamy.Models
             return categories;
         }
 
-        public List<SelectListItem> GetSelectListItems()
-        {
-            List<SelectListItem> list = new List<SelectListItem>();
-
-            foreach (var category in GetAll())
-            {
-                list.Add(new SelectListItem { Text = category.CategoryName, Value = category.CategoryId.ToString()});
-            }
-            return list;
-        }
-
         public void Update(Category category)
         {
             var entry = AppDBContext.Entry(category);

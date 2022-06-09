@@ -42,6 +42,15 @@ namespace Aflamy.Models
         {
             return AppDBContext.Movies.Include(m => m.MovieCategries).ToList();
         }
+        public void ClearMovieCategories(int id)
+        {
+            Movie movie = Get(id);
+            movie.MovieCategries.Clear();
+            AppDBContext.SaveChanges();
+            var entry = AppDBContext.Entry(movie);
+            entry.State = EntityState.Detached;
+
+        }
 
         public void Update(Movie movie)
         {

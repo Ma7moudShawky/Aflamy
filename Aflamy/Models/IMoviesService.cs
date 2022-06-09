@@ -8,5 +8,6 @@ namespace Aflamy.Models
         void Add(Movie movie);
         void Update(Movie movie);
         void Delete(int id);
+        void ClearMovieCategories(int id);
     }
 }

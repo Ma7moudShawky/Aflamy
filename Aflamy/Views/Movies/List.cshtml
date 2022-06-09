@@ -7,7 +7,7 @@
 <h1>All Movies</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-outline-success">Create New</a>
 </p>
 <table class="table" id="MoviesTable">
     <thead>
@@ -49,9 +49,9 @@
                     </ul>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.MovieID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MovieID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MovieID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.MovieID" class="btn btn-secondary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MovieID" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MovieID" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

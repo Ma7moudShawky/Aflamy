@@ -43,8 +43,10 @@ namespace Aflamy.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            AddMovieViewModel addMovieViewModel = new AddMovieViewModel();
-            addMovieViewModel.AllCategories = CategoryService.GetSelectListItems();
+            AddMovieViewModel addMovieViewModel = new AddMovieViewModel
+            {
+                AllCategories = CategoryService.GetAll().ToList()
+            };
             return View(addMovieViewModel);
         }
 
@@ -59,7 +61,7 @@ namespace Aflamy.Controllers
                 MoviesService.Add(model.AddedMovie);
                 return RedirectToAction(nameof(List));
             }
-            return View(model.AddedMovie);
+            return View(model);
 
         }
 
@@ -71,16 +73,16 @@ namespace Aflamy.Controllers
             {
                 return NotFound();
             }
-            AddMovieViewModel movieViewModel = new AddMovieViewModel();
-            movieViewModel.AddedMovie = MoviesService.Get(id);
-            movieViewModel.AllCategories = CategoryService.GetSelectListItems();
-
-            foreach (Category category in movieViewModel.AddedMovie.MovieCategries)
+            AddMovieViewModel addMovieViewModel = new AddMovieViewModel
             {
-                movieViewModel.AllCategories.FirstOrDefault(c => c.Text == category.CategoryName).Selected=true;
+                AllCategories = CategoryService.GetAll().ToList()
+            };
+            addMovieViewModel.AddedMovie = MoviesService.Get(id);
+            foreach (Category category in addMovieViewModel.AddedMovie.MovieCategries)
+            {
+                addMovieViewModel.SelectedCategoriesIds.Add(category.CategoryId);
             }
-
-            return View(movieViewModel);
+            return View(addMovieViewModel);
         }
 
         // POST: Movies/Edit/5
@@ -89,11 +91,13 @@ namespace Aflamy.Controllers
         public IActionResult Edit(AddMovieViewModel model)
         {
 
-            //if (ModelState.IsValid)
-            //{
-            //    MoviesService.Update(movie);
-            //    return RedirectToAction(nameof(List));
-            //}
+            if (ModelState.IsValid)
+            {
+                MoviesService.ClearMovieCategories(model.AddedMovie.MovieID);
+                model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
+                MoviesService.Update(model.AddedMovie);
+                return RedirectToAction(nameof(List));
+            }
             return View(model);
         }
 

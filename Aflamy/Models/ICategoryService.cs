@@ -10,7 +10,6 @@ namespace Aflamy.Models
         void Add(Category category);
         void Update(Category category);
         void Delete(int id);
-        List<SelectListItem> GetSelectListItems();
 
     }
 }
