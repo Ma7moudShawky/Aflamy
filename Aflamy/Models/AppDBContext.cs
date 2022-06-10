@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aflamy.Models
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext<IdentityUser>
     {
         public AppDBContext(DbContextOptions options) : base(options)
         {
