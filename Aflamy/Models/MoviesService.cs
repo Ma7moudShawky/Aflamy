@@ -49,7 +49,6 @@ namespace Aflamy.Models
             AppDBContext.SaveChanges();
             var entry = AppDBContext.Entry(movie);
             entry.State = EntityState.Detached;
-
         }
 
         public void Update(Movie movie)

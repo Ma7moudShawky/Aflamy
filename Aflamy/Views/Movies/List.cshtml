@@ -18,9 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poster)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.MovieCategries)
             </th>
@@ -32,13 +30,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MovieName)
+                    <a asp-action="Details" asp-route-id="@item.MovieID">
+                        <img src="~/Images/@item.Poster" class="img-fluid" width="70px" />
+                        <h6>@item.MovieName</h6>
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Poster)
                 </td>
                 <td>
                     <ul>

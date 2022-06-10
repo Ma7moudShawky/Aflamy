@@ -19,5 +19,9 @@ namespace Aflamy.ViewModels
         public Movie AddedMovie { get; set; }
         public List<Category>? AllCategories { get; set; }
 
+        [Required(ErrorMessage = "Please choose movie poster")]
+        [Display(Name = "Poster")]
+        public IFormFile Posterimage { get; set; }
+
     }
 }

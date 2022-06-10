@@ -15,9 +15,8 @@ namespace Aflamy.Models
         [Required(ErrorMessage = "Please Enter Movie Description")]
         [Display(Name = "Movie Description")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "Please Upload Movie Poster")]
-        public  string Poster { get; set; }
-        [Display(Name ="Categories")]
-        public List<Category> MovieCategries{ get; set; }
+        public string? Poster { get; set; }
+        [Display(Name = "Categories")]
+        public List<Category> MovieCategries { get; set; }
     }
 }

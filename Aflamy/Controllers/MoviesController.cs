@@ -1,7 +1,13 @@
-﻿using Aflamy.Models;
-using Aflamy.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Aflamy.Models;
+using Aflamy.ViewModels;
+using System.Net.Http.Headers;
 
 namespace Aflamy.Controllers
 {
@@ -9,11 +15,13 @@ namespace Aflamy.Controllers
     {
         public IMoviesService MoviesService { get; }
         public ICategoryService CategoryService { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public MoviesController(IMoviesService moviesService, ICategoryService categoryService)
+        public MoviesController(IMoviesService moviesService, ICategoryService categoryService, IWebHostEnvironment environment)
         {
             MoviesService = moviesService;
             CategoryService = categoryService;
+            Environment = environment;
         }
 
         // GET: Movies
@@ -52,10 +60,19 @@ namespace Aflamy.Controllers
         {
             if (ModelState.IsValid)
             {
+                string path = $"{DateTime.Now.ToFileTime()}{model.Posterimage.FileName}";
+                model.AddedMovie.Poster = path;
+                string Fullpath = Path.Combine(Environment.WebRootPath, "Images", path);
+                using (FileStream stream = new FileStream(Fullpath, FileMode.Create))
+                {
+                    model.Posterimage.CopyTo(stream);
+                }
+
                 model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
                 MoviesService.Add(model.AddedMovie);
                 return RedirectToAction(nameof(List));
             }
+            model.AllCategories = CategoryService.GetAll().ToList();
             return View(model);
 
         }
@@ -77,6 +94,11 @@ namespace Aflamy.Controllers
             {
                 addMovieViewModel.SelectedCategoriesIds.Add(category.CategoryId);
             }
+            string FullPath = Path.Combine(Environment.WebRootPath, "Images", addMovieViewModel.AddedMovie.Poster);
+            using (var fileStream = System.IO.File.OpenRead(FullPath))
+            {
+                addMovieViewModel.Posterimage = new FormFile(fileStream, 0, fileStream.Length, null, Path.GetFileName(fileStream.Name));
+            }
             return View(addMovieViewModel);
         }
 
@@ -93,6 +115,7 @@ namespace Aflamy.Controllers
                 MoviesService.Update(model.AddedMovie);
                 return RedirectToAction(nameof(List));
             }
+            model.AllCategories = CategoryService.GetAll().ToList();
             return View(model);
         }
 
