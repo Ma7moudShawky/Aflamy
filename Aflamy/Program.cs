@@ -3,14 +3,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("AppDBContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDBContextConnection' not found.");
 
-ConfigurationManager configuration = builder.Configuration;
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseSqlServer(connectionString)); ;
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDBContext>(); ;
+
+//ConfigurationManager configuration = builder.Configuration;
 
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("MyConnection")));
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDBContext>();
+//builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("MyConnection")));
+//builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDBContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IMoviesService, MoviesService>();

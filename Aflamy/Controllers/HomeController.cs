@@ -7,15 +7,18 @@ namespace Aflamy.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMoviesService moviesService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IMoviesService moviesService)
         {
             _logger = logger;
+            this.moviesService = moviesService;
         }
 
         public IActionResult Index()
         {
-            return View();
+           IEnumerable<Movie> model=  moviesService.GetAll();
+            return View(model);
         }
 
         public IActionResult Privacy()

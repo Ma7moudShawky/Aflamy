@@ -1,8 +1,36 @@
-﻿@{
+﻿@model IEnumerable<Aflamy.Models.Movie>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="PageContainer">
+    @foreach (Movie movie in Model)
+    {
+        <div class="Moviecontainer">
+            <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieID">
+                <img src="~/Images/@movie.Poster" class="MovieImg img-thumbnail" />
+            </a>
+            <a class="MovieTitle" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieID">
+                @movie.MovieName
+            </a>
+            <ul>
+                <li>
+                    @{
+                        int i = 0;
+                        @foreach (Category category in movie.MovieCategries)
+                        {
+                            @category.CategoryName
+                            i++;
+                            if (movie.MovieCategries.Count > 1)
+                            {
+                                if (i == movie.MovieCategries.Count) continue;
+                                <span>
+                                    |
+                                </span>
+                            }
+                        }
+                    }
+                </li>
+            </ul>
+        </div>
+    }
 </div>

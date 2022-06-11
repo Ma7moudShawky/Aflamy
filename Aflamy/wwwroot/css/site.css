@@ -21,11 +21,40 @@ div {
     margin-bottom: 3px;
 }
 
-a {
+
+
+.MovieTitle {
+    white-space: nowrap;
     text-decoration: none;
+    font-size:20px;
+    font-weight:500;
     color: black;
+    margin-left: 15px;
 }
 
-    a h6 {
-        display: inline;
+.Moviecontainer {
+    width: 250px;
+    height: 400px;
+    display: inline-block;
+    border: 2px solid darkgray;
+    margin: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition:all 1s;
+}
+    .Moviecontainer:hover {
+        border: 2px solid darkgreen;
+        width:260px;
     }
+
+
+.MovieImg {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+    .MovieImg:hover {
+        opacity: 0.8;
+    }
+
