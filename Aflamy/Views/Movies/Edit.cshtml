@@ -53,4 +53,11 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+
+<script>
+    $(function(){
+        $("#Posterimage").rules('remove', 'required');
+        $("form").validate();
+    });
+</script>
+}
