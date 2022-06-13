@@ -1,9 +1,12 @@
 ﻿using Aflamy.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Aflamy.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class CategoriesController : Controller
     {
         public CategoriesController(ICategoryService categoryService)

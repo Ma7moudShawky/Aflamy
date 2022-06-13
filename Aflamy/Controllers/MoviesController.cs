@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Aflamy.Models;
 using Aflamy.ViewModels;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aflamy.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MoviesController : Controller
     {
         public IMoviesService MoviesService { get; }

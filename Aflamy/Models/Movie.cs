@@ -18,5 +18,7 @@ namespace Aflamy.Models
         public string? Poster { get; set; }
         [Display(Name = "Categories")]
         public List<Category> MovieCategries { get; set; }
+
+        public List<CustomIdentityUser> UsersWhoFavorite { get; set; }
     }
 }

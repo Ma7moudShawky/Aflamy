@@ -8,8 +8,10 @@ var connectionString = builder.Configuration.GetConnectionString("AppDBContextCo
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(connectionString)); ;
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<CustomIdentityUser>()
+    .AddRoles<IdentityRole<int>>()
     .AddEntityFrameworkStores<AppDBContext>(); ;
+
 
 //ConfigurationManager configuration = builder.Configuration;
 
