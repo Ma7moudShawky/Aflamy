@@ -1,10 +1,11 @@
 ﻿using Aflamy.Models;
 using Aflamy.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 
 namespace Aflamy.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MoviesController : Controller
     {
         public IMoviesService MoviesService { get; }
@@ -19,6 +20,7 @@ namespace Aflamy.Controllers
         }
 
         // GET: Movies
+        [AllowAnonymous]
         public IActionResult List()
         {
             var Movies = MoviesService.GetAll();

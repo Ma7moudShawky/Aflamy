@@ -10,6 +10,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 
 
 builder.Services.AddDefaultIdentity<IdentityUser<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole<int>>()
     .AddEntityFrameworkStores<AppDBContext>(); ;
 
 //ConfigurationManager configuration = builder.Configuration;
