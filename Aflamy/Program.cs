@@ -6,9 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AppDBContextConnection") ?? throw new InvalidOperationException("Connection string 'AppDBContextConnection' not found.");
 
 builder.Services.AddDbContext<AppDBContext>(options =>
-    options.UseSqlServer(connectionString)); ;
+    options.UseSqlServer(connectionString));;
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+builder.Services.AddDefaultIdentity<IdentityUser<int>>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDBContext>(); ;
 
 //ConfigurationManager configuration = builder.Configuration;

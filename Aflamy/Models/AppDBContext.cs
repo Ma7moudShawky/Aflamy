@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aflamy.Models
 {
-    public class AppDBContext : IdentityDbContext<IdentityUser>
+    public class AppDBContext : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>
     {
         public AppDBContext(DbContextOptions options) : base(options)
         {
@@ -30,6 +30,11 @@ namespace Aflamy.Models
             new Movie { MovieID = 4, MovieName = "AmericanEast", Description = "AmericanEastDDDDDDD", Poster = "Another Test" },
             new Movie { MovieID = 5, MovieName = "Frank McKlusky", Description = "Frank McKluskyTDs", Poster = "Another Test" }
             );
+
+            modelBuilder.Entity<IdentityRole<int>>().HasData(
+                new IdentityRole<int> { Id = 1, Name = "Admin" },
+                new IdentityRole<int> { Id = 2, Name = "User" }
+                );
 
         }
 
