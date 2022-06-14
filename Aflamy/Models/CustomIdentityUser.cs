@@ -7,7 +7,10 @@ namespace Aflamy.Models
         public CustomIdentityUser()
         {
             UserFavorites = new List<Movie>();
+            Reviews = new List<Review>();
         }
-       public List<Movie> UserFavorites { get; set; }
+        public List<Review>? Reviews { get; set; }
+
+        public List<Movie> UserFavorites { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace Aflamy.Controllers
             foreach (Movie movie in movies)
             {
                 moviesService.SetIsFavotite(user, movie.MovieID);
+                movie.RateAvg = moviesService.GetAverageRate(movie.MovieID);
             }
             return View(movies);
         }
@@ -55,6 +56,7 @@ namespace Aflamy.Controllers
         {
             CustomIdentityUser user = await userManager.GetUserAsync(User);
             List<Movie> FavMovies = moviesService.GetFavourites(user);
+            FavMovies.ForEach(movie => movie.RateAvg = moviesService.GetAverageRate(movie.MovieID));
             TempData["Current"] = "Favourites";
             return View(FavMovies);
         }

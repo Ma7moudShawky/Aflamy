@@ -1,32 +1,39 @@
-﻿@model Aflamy.Models.Movie
+﻿@model Aflamy.ViewModels.DetailsWithReviewViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back to List</a>
+</div>
 
 <div>
-    <h4>Movie</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MovieName)
+            @Html.DisplayNameFor(model => model.movie.MovieName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MovieName)
+            @Html.DisplayFor(model => model.movie.MovieName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.movie.Description)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.movie.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MovieCategries)
+            <p>Rate : </p>
         </dt>
         <dd class="col-sm-10">
-            @foreach (Category category in Model.MovieCategries)
+            <p>@Model.movie.RateAvg / 10</p>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.movie.MovieCategries)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (Category category in Model.movie.MovieCategries)
             {
                 <ul>
                     <li>
@@ -36,14 +43,37 @@
             }
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Poster)
+            @Html.DisplayNameFor(model => model.movie.Poster)
         </dt>
         <dd class="col-sm-10">
-            <img src="~/Images/@Model.Poster" class="img-fluid" />
+            <img src="~/Images/@Model.movie.Poster" class="img-fluid" />
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" class="btn btn-secondary" asp-route-id="@Model?.MovieID">Edit</a> |
-    <a asp-action="List" class="btn btn-primary">Back to List</a>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Details">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.review.ReviewBody" class="control-label"></label>
+                <textarea asp-for="@Model.review.ReviewBody" class="form-control" placeholder="Have any comment about the movie ?" rows="3"></textarea>
+                <span asp-validation-for="@Model.review.ReviewBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.review.Rate" class="control-label"></label>
+                <input asp-for="@Model.review.Rate" class="form-control" min="0" max="10" />
+                <span asp-validation-for="@Model.review.Rate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Review" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
 </div>
+@foreach(Review review in Model.movie.Reviews){
+    <div class="ReviewContainer">
+        <h5 class="UserNameForReview">@review.User.UserName : </h5>
+        <h5 class="Rate">@review.Rate / <span class="alert-success">10</span></h5>
+        <p class="ReviewBody">@review.ReviewBody</p>
+    </div>
+}

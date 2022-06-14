@@ -8,20 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aflamy.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class MoviesController : Controller
     {
         public IMoviesService MoviesService { get; }
         public ICategoryService CategoryService { get; }
+        public UserManager<CustomIdentityUser> UserManager { get; }
 
-        public MoviesController(IMoviesService moviesService, ICategoryService categoryService)
+        public MoviesController(IMoviesService moviesService, ICategoryService categoryService, UserManager<CustomIdentityUser> userManager)
         {
             MoviesService = moviesService;
             CategoryService = categoryService;
+            UserManager = userManager;
         }
 
         // GET: Movies
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public IActionResult List()
         {
             var Movies = MoviesService.GetAll();
@@ -29,18 +30,40 @@ namespace Aflamy.Controllers
         }
 
         // GET: Movies/Details/5
+
+        [HttpGet]
         public IActionResult Details(int id)
         {
             if (MoviesService.Get(id) == null)
             {
                 return NotFound();
             }
-
-            return View(MoviesService.Get(id));
+            DetailsWithReviewViewModel detailsWithReviewViewModel = new DetailsWithReviewViewModel();
+            detailsWithReviewViewModel.movie = MoviesService.Get(id);
+            detailsWithReviewViewModel.movie.RateAvg = MoviesService.GetAverageRate(id);
+            return View(detailsWithReviewViewModel);
         }
-
+        [HttpPost]
+        [Authorize(Roles = "User,Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(DetailsWithReviewViewModel detailsWithReviewViewModel, int id)
+        {
+            CustomIdentityUser user = await UserManager.GetUserAsync(User);
+            Review review = new Review()
+            {
+                Movie = MoviesService.Get(id),
+                Rate = detailsWithReviewViewModel.review.Rate,
+                ReviewBody = detailsWithReviewViewModel.review.ReviewBody,
+                User = user
+            };
+            MoviesService.AddReview(review);
+            detailsWithReviewViewModel.movie = MoviesService.Get(id);
+            detailsWithReviewViewModel.movie.RateAvg = MoviesService.GetAverageRate(id);
+            return View(detailsWithReviewViewModel);
+        }
         // GET: Movies/Create
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             AddMovieViewModel addMovieViewModel = new AddMovieViewModel
@@ -53,13 +76,14 @@ namespace Aflamy.Controllers
         // POST: Movies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(AddMovieViewModel model)
         {
             if (ModelState.IsValid)
             {
                 string path = $"{DateTime.Now.ToFileTime()}{model.Posterimage.FileName}";
                 model.AddedMovie.Poster = path;
-                MoviesService.SaveMovieCover(model.Posterimage,path);
+                MoviesService.SaveMovieCover(model.Posterimage, path);
                 model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
                 MoviesService.Add(model.AddedMovie);
                 return RedirectToAction(nameof(List));
@@ -72,6 +96,7 @@ namespace Aflamy.Controllers
 
         // GET: Movies/Edit/5
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             if (MoviesService.Get(id) == null)
@@ -91,6 +116,7 @@ namespace Aflamy.Controllers
         // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(AddMovieViewModel model)
         {
             ModelState.Remove("Posterimage");
@@ -99,7 +125,7 @@ namespace Aflamy.Controllers
                 if (model.Posterimage != null)
                 {
                     string path = $"{DateTime.Now.ToFileTime()}{model.Posterimage.FileName}";
-                    MoviesService.SaveMovieCover(model.Posterimage,path);
+                    MoviesService.SaveMovieCover(model.Posterimage, path);
                     model.AddedMovie.Poster = path;
                 }
                 else
@@ -117,6 +143,7 @@ namespace Aflamy.Controllers
         }
 
         // GET: Movies/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             if (MoviesService.Get(id) == null)
@@ -129,12 +156,13 @@ namespace Aflamy.Controllers
         // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             MoviesService.Delete(id);
             return RedirectToAction(nameof(List));
         }
 
-       
+
     }
 }

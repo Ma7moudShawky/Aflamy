@@ -34,7 +34,7 @@ div {
 
 .Moviecontainer {
     width: 250px;
-    height: 400px;
+    height: 410px;
     display: inline-block;
     border: 2px solid darkgray;
     margin: 10px;
@@ -59,6 +59,28 @@ div {
         opacity: 0.8;
     }
 
-.CategoryUL{
-    margin-bottom:0px;
+.CategoryUL {
+    margin-bottom: 0px;
+}
+
+textarea {
+    resize: none;
+}
+
+.ReviewContainer {
+    border: 2px solid Darkgray;
+    padding-top: 4px;
+    padding-left: 7px;
+}
+
+.UserNameForReview {
+    display: inline;
+}
+
+.Rate {
+    display: inline;
+}
+
+.ReviewBody {
+    padding-left: 10px
 }

@@ -8,6 +8,7 @@ namespace Aflamy.Models
         public Movie()
         {
             MovieCategries = new List<Category>();
+            Reviews = new List<Review>();
         }
         public int MovieID { get; set; }
 
@@ -19,15 +20,19 @@ namespace Aflamy.Models
         [Display(Name = "Movie Description")]
         public string Description { get; set; }
 
-        public string Poster { get; set; }
+        public string? Poster { get; set; }
 
         [Display(Name = "Categories")]
         public List<Category> MovieCategries { get; set; }
 
         public List<CustomIdentityUser>? UsersWhoFavorite { get; set; }
+        public List<Review>? Reviews { get; set; }
         [NotMapped]
 
         public bool? IsFavorite { get; set; }
+        [NotMapped]
+
+        public float? RateAvg { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model List<Movie>
 
-    
+
 @{
     ViewData["Title"] = "Favourites";
 }
@@ -46,6 +46,7 @@
                     <img src="~/Icons/favourite-2765.svg" width="20px" height="20px">
                 </a>
             }
+            <p>@movie.RateAvg / 10</p>
 
 
 

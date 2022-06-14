@@ -13,6 +13,7 @@ namespace Aflamy.Models
         void ToggleToFavorites(CustomIdentityUser user, int id);
         void SetIsFavotite(CustomIdentityUser User, int id);
         public List<Movie> GetFavourites(CustomIdentityUser user);
-
+        public void AddReview(Review review);
+        public float GetAverageRate(int id);
     }
 }
