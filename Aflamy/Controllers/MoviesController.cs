@@ -44,7 +44,7 @@ namespace Aflamy.Controllers
             return View(detailsWithReviewViewModel);
         }
         [HttpPost]
-        [Authorize(Roles = "User,Admin")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(DetailsWithReviewViewModel detailsWithReviewViewModel, int id)
         {

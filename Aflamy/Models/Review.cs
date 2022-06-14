@@ -14,7 +14,7 @@ namespace Aflamy.Models
         public CustomIdentityUser User { get; set; }
         [Required]
         [Range(0, 10,ErrorMessage ="The rate must be between 0 , 10")]
-        public int Rate { get; set; }
+        public float Rate { get; set; }
         [Required(ErrorMessage ="Please Enter The Review")]
         [Display(Name = "Review")]
         public string ReviewBody { get; set; }

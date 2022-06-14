@@ -39,14 +39,17 @@ namespace Aflamy.Models
                 .Include(m => m.MovieCategries)
                 .Include(m => m.UsersWhoFavorite)
                 .Include(m => m.Reviews)
+                .ThenInclude(R => R.User)
                 .FirstOrDefault(c => c.MovieID == id);
         }
 
         public IEnumerable<Movie> GetAll()
         {
-            return AppDBContext.Movies.Include(m => m.MovieCategries)
+            return AppDBContext.Movies
+                .Include(m => m.MovieCategries)
                 .Include(m => m.UsersWhoFavorite)
                 .Include(m => m.Reviews)
+                .ThenInclude(R => R.User)
                 .ToList();
         }
         public void ClearMovieCategories(int id)
@@ -125,7 +128,8 @@ namespace Aflamy.Models
             {
                 return 0;
             }
-            return sum / AllRates.Count();
+            double avg = sum / AllRates.Count();
+            return (float)Math.Round(avg, 1);
         }
     }
 }
