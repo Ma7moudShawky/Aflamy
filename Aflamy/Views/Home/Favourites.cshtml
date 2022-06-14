@@ -1,9 +1,9 @@
-﻿@model IEnumerable<Aflamy.Models.Movie>
+﻿@model List<Movie>
 
+    
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Favourites";
 }
-
 <div class="PageContainer">
     @foreach (Movie movie in Model)
     {

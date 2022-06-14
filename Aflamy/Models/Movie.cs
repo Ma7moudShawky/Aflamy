@@ -28,5 +28,6 @@ namespace Aflamy.Models
         [NotMapped]
 
         public bool? IsFavorite { get; set; }
+
     }
 }

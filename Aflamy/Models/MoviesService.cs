@@ -99,5 +99,12 @@ namespace Aflamy.Models
                 movie.IsFavorite = false;
             }
         }
+        public List<Movie> GetFavourites(CustomIdentityUser user)
+        {
+            List<Movie> movies = GetAll().ToList();
+            List<Movie> FavMovies = movies.Where(m => m.UsersWhoFavorite.Contains(user)).ToList();
+            FavMovies.ForEach(m => SetIsFavotite(user, m.MovieID));
+            return FavMovies;
+        }
     }
 }

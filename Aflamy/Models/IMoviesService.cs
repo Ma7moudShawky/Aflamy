@@ -10,7 +10,9 @@ namespace Aflamy.Models
         void Delete(int id);
         void ClearMovieCategories(int id);
         void SaveMovieCover(IFormFile Image, string path);
-        void ToggleToFavorites(CustomIdentityUser user,int id);
-        void SetIsFavotite(CustomIdentityUser User,int id);
+        void ToggleToFavorites(CustomIdentityUser user, int id);
+        void SetIsFavotite(CustomIdentityUser User, int id);
+        public List<Movie> GetFavourites(CustomIdentityUser user);
+
     }
 }

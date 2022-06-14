@@ -21,12 +21,13 @@ namespace Aflamy.Controllers
 
         public async Task<IActionResult> Index()
         {
+            TempData["Current"] = "Index";
             IEnumerable<Movie> movies = moviesService.GetAll();
             CustomIdentityUser user = await userManager.GetUserAsync(User);
 
             foreach (Movie movie in movies)
             {
-                moviesService.SetIsFavotite(user,movie.MovieID);
+                moviesService.SetIsFavotite(user, movie.MovieID);
             }
             return View(movies);
         }
@@ -35,9 +36,29 @@ namespace Aflamy.Controllers
         {
             CustomIdentityUser user = await userManager.GetUserAsync(User);
             moviesService.ToggleToFavorites(user, id);
-            IEnumerable<Movie> movies = moviesService.GetAll();
-            return RedirectToAction(nameof(Index), movies);
+            IEnumerable<Movie> movies = new List<Movie>();
+            if (TempData.ContainsKey("Current") && TempData["Current"].ToString() == "Favourites")
+            {
+                movies = moviesService.GetFavourites(user);
+                return RedirectToAction(nameof(Favourites), movies);
+
+            }
+            else
+            {
+                movies = moviesService.GetAll();
+                return RedirectToAction(nameof(Index), movies);
+            }
+
         }
+        [Authorize]
+        public async Task<IActionResult> Favourites()
+        {
+            CustomIdentityUser user = await userManager.GetUserAsync(User);
+            List<Movie> FavMovies = moviesService.GetFavourites(user);
+            TempData["Current"] = "Favourites";
+            return View(FavMovies);
+        }
+
         public IActionResult Privacy()
         {
             return View();
