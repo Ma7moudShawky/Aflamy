@@ -4,14 +4,14 @@ namespace Aflamy.Models
 {
     public class MoviesService : IMoviesService
     {
-        public MoviesService(AppDBContext appDBContext)
+        public MoviesService(AppDBContext appDBContext, IWebHostEnvironment environment)
         {
             AppDBContext = appDBContext;
+            Environment = environment;
         }
 
         public AppDBContext AppDBContext { get; }
-
-       
+        public IWebHostEnvironment Environment { get; }
 
         public void Add(Movie movie)
         {
@@ -35,12 +35,17 @@ namespace Aflamy.Models
 
         public Movie Get(int id)
         {
-            return AppDBContext.Movies.Include(m=>m.MovieCategries).FirstOrDefault(c => c.MovieID == id);
+            return AppDBContext.Movies
+                .Include(m => m.MovieCategries)
+                .Include(m => m.UsersWhoFavorite)
+                .FirstOrDefault(c => c.MovieID == id);
         }
 
         public IEnumerable<Movie> GetAll()
         {
-            return AppDBContext.Movies.Include(m => m.MovieCategries).ToList();
+            return AppDBContext.Movies.Include(m => m.MovieCategries)
+                .Include(m => m.UsersWhoFavorite)
+                .ToList();
         }
         public void ClearMovieCategories(int id)
         {
@@ -56,6 +61,43 @@ namespace Aflamy.Models
             var entry = AppDBContext.Entry(movie);
             entry.State = EntityState.Modified;
             AppDBContext.SaveChanges();
+        }
+
+        public void SaveMovieCover(IFormFile Image, string path)
+        {
+
+            string Fullpath = Path.Combine(Environment.WebRootPath, "Images", path);
+            using (FileStream stream = new FileStream(Fullpath, FileMode.Create))
+            {
+                Image.CopyTo(stream);
+            }
+        }
+
+        public void ToggleToFavorites(CustomIdentityUser user, int id)
+        {
+            Movie movie = Get(id);
+            if (movie.UsersWhoFavorite.Contains(user))
+            {
+                movie.UsersWhoFavorite.Remove(user);
+            }
+            else
+            {
+                user.UserFavorites.Add(movie);
+            }
+            AppDBContext.SaveChanges();
+        }
+
+        public void SetIsFavotite(CustomIdentityUser User, int id)
+        {
+            Movie movie = Get(id);
+            if (movie.UsersWhoFavorite.Contains(User))
+            {
+                movie.IsFavorite = true;
+            }
+            else
+            {
+                movie.IsFavorite = false;
+            }
         }
     }
 }

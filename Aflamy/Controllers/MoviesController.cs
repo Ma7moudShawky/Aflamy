@@ -9,6 +9,7 @@ using Aflamy.Models;
 using Aflamy.ViewModels;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Aflamy.Controllers
 {
@@ -17,13 +18,11 @@ namespace Aflamy.Controllers
     {
         public IMoviesService MoviesService { get; }
         public ICategoryService CategoryService { get; }
-        public IWebHostEnvironment Environment { get; }
 
-        public MoviesController(IMoviesService moviesService, ICategoryService categoryService, IWebHostEnvironment environment)
+        public MoviesController(IMoviesService moviesService, ICategoryService categoryService)
         {
             MoviesService = moviesService;
             CategoryService = categoryService;
-            Environment = environment;
         }
 
         // GET: Movies
@@ -64,17 +63,13 @@ namespace Aflamy.Controllers
             {
                 string path = $"{DateTime.Now.ToFileTime()}{model.Posterimage.FileName}";
                 model.AddedMovie.Poster = path;
-                string Fullpath = Path.Combine(Environment.WebRootPath, "Images", path);
-                using (FileStream stream = new FileStream(Fullpath, FileMode.Create))
-                {
-                    model.Posterimage.CopyTo(stream);
-                }
-
+                MoviesService.SaveMovieCover(model.Posterimage,path);
                 model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
                 MoviesService.Add(model.AddedMovie);
                 return RedirectToAction(nameof(List));
             }
             model.AllCategories = CategoryService.GetAll().ToList();
+            ModelState.AddModelError("", "SomeThing wrong happened ,please try again");
             return View(model);
 
         }
@@ -96,11 +91,7 @@ namespace Aflamy.Controllers
             {
                 addMovieViewModel.SelectedCategoriesIds.Add(category.CategoryId);
             }
-            string FullPath = Path.Combine(Environment.WebRootPath, "Images", addMovieViewModel.AddedMovie.Poster);
-            using (var fileStream = System.IO.File.OpenRead(FullPath))
-            {
-                addMovieViewModel.Posterimage = new FormFile(fileStream, 0, fileStream.Length, null, Path.GetFileName(fileStream.Name));
-            }
+
             return View(addMovieViewModel);
         }
 
@@ -109,9 +100,20 @@ namespace Aflamy.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(AddMovieViewModel model)
         {
-
+            ModelState.Remove("Posterimage");
             if (ModelState.IsValid)
             {
+                if (model.Posterimage != null)
+                {
+                    string path = $"{DateTime.Now.ToFileTime()}{model.Posterimage.FileName}";
+                    MoviesService.SaveMovieCover(model.Posterimage,path);
+                    model.AddedMovie.Poster = path;
+                }
+                else
+                {
+                    model.AddedMovie.Poster = MoviesService.Get(model.AddedMovie.MovieID).Poster;
+                }
+
                 MoviesService.ClearMovieCategories(model.AddedMovie.MovieID);
                 model.AddedMovie.MovieCategries = CategoryService.GetCategoriesListByID(model.SelectedCategoriesIds);
                 MoviesService.Update(model.AddedMovie);
@@ -140,5 +142,6 @@ namespace Aflamy.Controllers
             return RedirectToAction(nameof(List));
         }
 
+       
     }
 }

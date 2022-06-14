@@ -7,8 +7,3 @@ $(document).ready(function () {
 });
 
 
-$(function () {
-    $.fn.selectpicker.Constructor.BootstrapVersion = '5.1.3';
-
-    $('select').selectpicker();
-});

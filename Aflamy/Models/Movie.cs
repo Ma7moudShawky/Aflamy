@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aflamy.Models
 {
@@ -19,6 +20,9 @@ namespace Aflamy.Models
         [Display(Name = "Categories")]
         public List<Category> MovieCategries { get; set; }
 
-        public List<CustomIdentityUser> UsersWhoFavorite { get; set; }
+        public List<CustomIdentityUser>? UsersWhoFavorite { get; set; }
+        [NotMapped]
+
+        public bool? IsFavorite { get; set; }
     }
 }

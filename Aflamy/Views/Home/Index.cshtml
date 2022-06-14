@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<Aflamy.Models.Movie>
+
 @{
     ViewData["Title"] = "Home Page";
 }
+
 <div class="PageContainer">
     @foreach (Movie movie in Model)
     {
@@ -12,7 +14,7 @@
             <a class="MovieTitle" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.MovieID">
                 @movie.MovieName
             </a>
-            <ul>
+            <ul class="CategoryUL">
                 <li>
                     @{
                         int i = 0;
@@ -31,6 +33,22 @@
                     }
                 </li>
             </ul>
+            @if (movie.IsFavorite.Value)
+            {
+                <a asp-action="ToogleToFavorites" asp-route-id="@movie.MovieID">
+                    <img src="~/Icons/star-7207.svg" width="20px" height="20px">
+                </a>
+            }
+            else
+            {
+
+                <a asp-action="ToogleToFavorites" asp-route-id="@movie.MovieID">
+                    <img src="~/Icons/favourite-2765.svg" width="20px" height="20px">
+                </a>
+            }
+
+
+
         </div>
     }
 </div>
