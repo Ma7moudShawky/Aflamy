@@ -5,18 +5,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Aflamy.Migrations
 {
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.cs
     public partial class AddCustomIdentityUserWithFavourits : Migration
+========
+    public partial class ChangeUserRolePK : Migration
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Poster",
-                table: "Movies",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -38,7 +34,10 @@ namespace Aflamy.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.cs
                     MovieID = table.Column<int>(type: "int", nullable: true),
+========
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.cs
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -173,12 +172,32 @@ namespace Aflamy.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.cs
                 values: new object[] { 1, "ffa04ad1-6291-477d-8cad-b88692b81e87", "Admin", null });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[] { 2, "3b303566-4f93-460a-9728-73e8adcf74bf", "User", null });
+========
+                values: new object[,]
+                {
+                    { 1, "2e867ad3-fa94-4a6b-b9bd-dfc7f6608bb6", "Admin", null },
+                    { 2, "8c698c69-ef15-4888-b444-7cee0eb029af", "User", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "MovieID", "Description", "MovieName", "Poster" },
+                values: new object[,]
+                {
+                    { 1, "Will's soon-to-be ex-wife mysteriously vanishes ", "Last Seen Alive", "JustTest" },
+                    { 2, "One Army captain", "Interceptor", "Another Test" },
+                    { 3, "The Dreamseller Desccccc", "The Dreamseller", "Another Test" },
+                    { 4, "AmericanEastDDDDDDD", "AmericanEast", "Another Test" },
+                    { 5, "Frank McKluskyTDs", "Frank McKlusky", "Another Test" }
+                });
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -248,15 +267,30 @@ namespace Aflamy.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Poster",
+            migrationBuilder.DeleteData(
                 table: "Movies",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                keyColumn: "MovieID",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Movies",
+                keyColumn: "MovieID",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Movies",
+                keyColumn: "MovieID",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Movies",
+                keyColumn: "MovieID",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Movies",
+                keyColumn: "MovieID",
+                keyValue: 5);
         }
     }
 }

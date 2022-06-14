@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Aflamy.Models;
+﻿using Aflamy.Models;
 using Aflamy.ViewModels;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Aflamy.Controllers
 {
@@ -26,6 +21,7 @@ namespace Aflamy.Controllers
         }
 
         // GET: Movies
+        [AllowAnonymous]
         public IActionResult List()
         {
             var Movies = MoviesService.GetAll();
@@ -87,10 +83,7 @@ namespace Aflamy.Controllers
                 AllCategories = CategoryService.GetAll().ToList()
             };
             addMovieViewModel.AddedMovie = MoviesService.Get(id);
-            foreach (Category category in addMovieViewModel.AddedMovie.MovieCategries)
-            {
-                addMovieViewModel.SelectedCategoriesIds.Add(category.CategoryId);
-            }
+            addMovieViewModel.SelectedCategoriesIds = addMovieViewModel.AddedMovie.MovieCategries.Select(x => x.CategoryId).ToList();
 
             return View(addMovieViewModel);
         }

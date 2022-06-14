@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aflamy.Migrations
 {
     [DbContext(typeof(AppDBContext))]
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
     [Migration("20220613132346_AddCustomIdentityUserWithFavourits")]
     partial class AddCustomIdentityUserWithFavourits
+========
+    [Migration("20220613112044_Change-User-Role-PK")]
+    partial class ChangeUserRolePK
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,7 +78,87 @@ namespace Aflamy.Migrations
                         });
                 });
 
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
             modelBuilder.Entity("Aflamy.Models.CustomIdentityUser", b =>
+========
+            modelBuilder.Entity("Aflamy.Models.Movie", b =>
+                {
+                    b.Property<int>("MovieID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieID"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MovieName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Poster")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MovieID");
+
+                    b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            MovieID = 1,
+                            Description = "Will's soon-to-be ex-wife mysteriously vanishes ",
+                            MovieName = "Last Seen Alive",
+                            Poster = "JustTest"
+                        },
+                        new
+                        {
+                            MovieID = 2,
+                            Description = "One Army captain",
+                            MovieName = "Interceptor",
+                            Poster = "Another Test"
+                        },
+                        new
+                        {
+                            MovieID = 3,
+                            Description = "The Dreamseller Desccccc",
+                            MovieName = "The Dreamseller",
+                            Poster = "Another Test"
+                        },
+                        new
+                        {
+                            MovieID = 4,
+                            Description = "AmericanEastDDDDDDD",
+                            MovieName = "AmericanEast",
+                            Poster = "Another Test"
+                        },
+                        new
+                        {
+                            MovieID = 5,
+                            Description = "Frank McKluskyTDs",
+                            MovieName = "Frank McKlusky",
+                            Poster = "Another Test"
+                        });
+                });
+
+            modelBuilder.Entity("CategoryMovie", b =>
+                {
+                    b.Property<int>("MovieCategriesCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MoviesMovieID")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieCategriesCategoryId", "MoviesMovieID");
+
+                    b.HasIndex("MoviesMovieID");
+
+                    b.ToTable("CategoryMovie");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,6 +166,78 @@ namespace Aflamy.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ConcurrencyStamp = "2e867ad3-fa94-4a6b-b9bd-dfc7f6608bb6",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConcurrencyStamp = "8c698c69-ef15-4888-b444-7cee0eb029af",
+                            Name = "User"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
+========
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
@@ -146,6 +303,7 @@ namespace Aflamy.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
             modelBuilder.Entity("Aflamy.Models.Movie", b =>
                 {
                     b.Property<int>("MovieID")
@@ -230,6 +388,9 @@ namespace Aflamy.Migrations
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+========
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,6 +404,7 @@ namespace Aflamy.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -267,6 +429,8 @@ namespace Aflamy.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
+========
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -369,7 +533,11 @@ namespace Aflamy.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
                     b.HasOne("Aflamy.Models.CustomIdentityUser", null)
+========
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<int>", null)
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -378,7 +546,11 @@ namespace Aflamy.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
                     b.HasOne("Aflamy.Models.CustomIdentityUser", null)
+========
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<int>", null)
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,7 +565,11 @@ namespace Aflamy.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
                     b.HasOne("Aflamy.Models.CustomIdentityUser", null)
+========
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<int>", null)
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -402,7 +578,11 @@ namespace Aflamy.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
+<<<<<<<< HEAD:Aflamy/Migrations/20220613132346_AddCustomIdentityUserWithFavourits.Designer.cs
                     b.HasOne("Aflamy.Models.CustomIdentityUser", null)
+========
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<int>", null)
+>>>>>>>> 44742955ff51193725736dc378884b865d87e7a1:Aflamy/Migrations/20220613112044_Change-User-Role-PK.Designer.cs
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

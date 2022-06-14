@@ -1,5 +1,4 @@
 ﻿using Aflamy.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace Aflamy.ViewModels
@@ -9,12 +8,12 @@ namespace Aflamy.ViewModels
         public AddMovieViewModel()
         {
             SelectedCategoriesIds = new List<int>();
-            AddedMovie=new Movie();
+            AddedMovie = new Movie();
             AllCategories = new List<Category>();
         }
 
-        [Required(ErrorMessage ="Please choose movie category")]
-        [Display(Name ="Category")]
+        [Required(ErrorMessage = "Please choose movie category")]
+        [Display(Name = "Category")]
         public List<int> SelectedCategoriesIds { get; set; }
         public Movie AddedMovie { get; set; }
         public List<Category>? AllCategories { get; set; }
