@@ -1,17 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Aflamy.Models
 {
     public class MoviesService : IMoviesService
     {
-        public MoviesService(AppDBContext appDBContext, IWebHostEnvironment environment)
+        public MoviesService(AppDBContext appDBContext, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             AppDBContext = appDBContext;
             Environment = environment;
+            HttpContextAccessor = httpContextAccessor;
         }
 
         public AppDBContext AppDBContext { get; }
         public IWebHostEnvironment Environment { get; }
+        public IHttpContextAccessor HttpContextAccessor { get; }
 
         public void Add(Movie movie)
         {
@@ -78,24 +81,28 @@ namespace Aflamy.Models
             }
         }
 
-        public void ToggleToFavorites(CustomIdentityUser user, int id)
+        public void ToggleToFavorites( int id)
         {
+            int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            CustomIdentityUser currnetUser = AppDBContext.Users.FirstOrDefault(u => u.Id == userId);
             Movie movie = Get(id);
-            if (movie.UsersWhoFavorite.Contains(user))
+            if (movie.UsersWhoFavorite.Contains(currnetUser))
             {
-                movie.UsersWhoFavorite.Remove(user);
+                movie.UsersWhoFavorite.Remove(currnetUser);
             }
             else
             {
-                user.UserFavorites.Add(movie);
+                currnetUser.UserFavorites.Add(movie);
             }
             AppDBContext.SaveChanges();
         }
 
-        public void SetIsFavotite(CustomIdentityUser User, int id)
+        public void SetIsFavotite(int id)
         {
+            int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            CustomIdentityUser currnetUser = AppDBContext.Users.FirstOrDefault(u => u.Id == userId);
             Movie movie = Get(id);
-            if (movie.UsersWhoFavorite.Contains(User))
+            if (movie.UsersWhoFavorite.Contains(currnetUser))
             {
                 movie.IsFavorite = true;
             }
@@ -104,12 +111,20 @@ namespace Aflamy.Models
                 movie.IsFavorite = false;
             }
         }
-        public List<Movie> GetFavourites(CustomIdentityUser user)
+        //public List<Movie> GetFavourites(CustomIdentityUser user)
+        //{
+        //    List<Movie> movies = GetAll().ToList();
+        //    List<Movie> FavMovies = movies.Where(m => m.UsersWhoFavorite.Contains(user)).ToList();
+        //    FavMovies.ForEach(m => SetIsFavotite(user, m.MovieID));
+        //    return FavMovies;
+        //}
+        public List<Movie> GetFavourites()
         {
-            List<Movie> movies = GetAll().ToList();
-            List<Movie> FavMovies = movies.Where(m => m.UsersWhoFavorite.Contains(user)).ToList();
-            FavMovies.ForEach(m => SetIsFavotite(user, m.MovieID));
-            return FavMovies;
+            int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            CustomIdentityUser currnetUser = AppDBContext.Users.Include(u => u.UserFavorites).FirstOrDefault(u => u.Id == userId);
+            List<Movie> favouriteMovies = currnetUser.UserFavorites;
+            favouriteMovies.ForEach(m => SetIsFavotite( m.MovieID));
+            return favouriteMovies;
         }
         public void AddReview(Review review)
         {

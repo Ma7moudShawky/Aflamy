@@ -1,4 +1,6 @@
 ﻿
+using System.Security.Claims;
+
 namespace Aflamy.Models
 {
     public interface IMoviesService
@@ -10,9 +12,9 @@ namespace Aflamy.Models
         void Delete(int id);
         void ClearMovieCategories(int id);
         void SaveMovieCover(IFormFile Image, string path);
-        void ToggleToFavorites(CustomIdentityUser user, int id);
-        void SetIsFavotite(CustomIdentityUser User, int id);
-        public List<Movie> GetFavourites(CustomIdentityUser user);
+        void ToggleToFavorites(int id);
+        void SetIsFavotite(int id);
+        public List<Movie> GetFavourites();
         public void AddReview(Review review);
         public float GetAverageRate(int id);
     }

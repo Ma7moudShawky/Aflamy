@@ -10,37 +10,33 @@ namespace Aflamy.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMoviesService moviesService;
-        private readonly UserManager<CustomIdentityUser> userManager;
 
-        public HomeController(ILogger<HomeController> logger, IMoviesService moviesService, UserManager<CustomIdentityUser> userManager)
+        public HomeController(ILogger<HomeController> logger, IMoviesService moviesService)
         {
             _logger = logger;
             this.moviesService = moviesService;
-            this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             TempData["Current"] = "Index";
             IEnumerable<Movie> movies = moviesService.GetAll();
-            CustomIdentityUser user = await userManager.GetUserAsync(User);
 
             foreach (Movie movie in movies)
             {
-                moviesService.SetIsFavotite(user, movie.MovieID);
+                moviesService.SetIsFavotite(movie.MovieID);
                 movie.RateAvg = moviesService.GetAverageRate(movie.MovieID);
             }
             return View(movies);
         }
         [Authorize]
-        public async Task<IActionResult> ToogleToFavorites(int id)
+        public IActionResult ToogleToFavorites(int id)
         {
-            CustomIdentityUser user = await userManager.GetUserAsync(User);
-            moviesService.ToggleToFavorites(user, id);
+            moviesService.ToggleToFavorites(id);
             IEnumerable<Movie> movies = new List<Movie>();
-            if (TempData.ContainsKey("Current") && TempData["Current"].ToString() == "Favourites")
+            if (TempData["Current"]?.ToString() == "Favourites")
             {
-                movies = moviesService.GetFavourites(user);
+                movies = moviesService.GetFavourites();
                 return RedirectToAction(nameof(Favourites), movies);
 
             }
@@ -52,10 +48,9 @@ namespace Aflamy.Controllers
 
         }
         [Authorize]
-        public async Task<IActionResult> Favourites()
+        public IActionResult Favourites()
         {
-            CustomIdentityUser user = await userManager.GetUserAsync(User);
-            List<Movie> FavMovies = moviesService.GetFavourites(user);
+            List<Movie> FavMovies = moviesService.GetFavourites();
             FavMovies.ForEach(movie => movie.RateAvg = moviesService.GetAverageRate(movie.MovieID));
             TempData["Current"] = "Favourites";
             return View(FavMovies);
