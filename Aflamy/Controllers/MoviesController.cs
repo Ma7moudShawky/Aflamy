@@ -57,9 +57,7 @@ namespace Aflamy.Controllers
                 User = user
             };
             MoviesService.AddReview(review);
-            detailsWithReviewViewModel.movie = MoviesService.Get(id);
-            detailsWithReviewViewModel.movie.RateAvg = MoviesService.GetAverageRate(id);
-            return View(detailsWithReviewViewModel);
+            return RedirectToAction(nameof(Details), id);
         }
         // GET: Movies/Create
         [HttpGet]
