@@ -61,7 +61,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.review.Rate" class="control-label"></label>
-                <input asp-for="@Model.review.Rate" class="form-control" min="0" max="10" />
+                <input asp-for="@Model.review.Rate" type="number" class="form-control" data-min="0" data-max="10" data-step="0.5" />
                 <span asp-validation-for="@Model.review.Rate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -70,10 +70,27 @@
         </form>
     </div>
 </div>
-@foreach(Review review in Model.movie.Reviews){
+@foreach (Review review in Model.movie.Reviews)
+{
     <div class="ReviewContainer">
         <h5 class="UserNameForReview">@review.User.UserName : </h5>
         <h5 class="Rate">@review.Rate / <span class="alert-success">10</span></h5>
         <p class="ReviewBody">@review.ReviewBody</p>
     </div>
+}
+
+@section scripts {
+
+<!-- important mandatory libraries -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+
+<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
+
+
+<script>
+    $(document).ready(()=>{
+            $('#review_Rate').rating();
+        })
+</script>
 }
