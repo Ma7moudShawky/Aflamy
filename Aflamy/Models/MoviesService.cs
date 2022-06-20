@@ -81,7 +81,7 @@ namespace Aflamy.Models
             }
         }
 
-        public void ToggleToFavorites( int id)
+        public void ToggleToFavorites(int id)
         {
             int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
             CustomIdentityUser currnetUser = AppDBContext.Users.FirstOrDefault(u => u.Id == userId);
@@ -99,7 +99,12 @@ namespace Aflamy.Models
 
         public void SetIsFavotite(int id)
         {
-            int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            int userId = 0;
+            string userIdString = HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString != null)
+            {
+                userId = int.Parse(userIdString);
+            }
             CustomIdentityUser currnetUser = AppDBContext.Users.FirstOrDefault(u => u.Id == userId);
             Movie movie = Get(id);
             if (movie.UsersWhoFavorite.Contains(currnetUser))
@@ -123,7 +128,7 @@ namespace Aflamy.Models
             int userId = int.Parse(HttpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
             CustomIdentityUser currnetUser = AppDBContext.Users.Include(u => u.UserFavorites).FirstOrDefault(u => u.Id == userId);
             List<Movie> favouriteMovies = currnetUser.UserFavorites;
-            favouriteMovies.ForEach(m => SetIsFavotite( m.MovieID));
+            favouriteMovies.ForEach(m => SetIsFavotite(m.MovieID));
             return favouriteMovies;
         }
         public void AddReview(Review review)

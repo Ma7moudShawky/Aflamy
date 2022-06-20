@@ -39,8 +39,10 @@
                     <span asp-validation-for="@Model.AddedMovie.Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <img class="img-fluid" width="150" id="myimage" />
+                    <br />
                     <label asp-for="@Model.Posterimage" class="control-label"></label>
-                    <input type="file" accept="image/*" asp-for="@Model.Posterimage" class="form-control" />
+                    <input type="file" accept="image/*" asp-for="@Model.Posterimage" class="form-control UploadImg" />
                     <span asp-validation-for="@Model.Posterimage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -64,8 +66,30 @@
     </div>
 
     @section Scripts {
-      
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(function() {
+            $("#Posterimage").rules('remove', 'required');
+            $("form").validate();
+        });
+        let UploadInput = document.querySelector(".UploadImg");
+        UploadInput.addEventListener("change", onFileSelected);
+
+        function onFileSelected(event) {
+            var selectedFile = event.target.files[0];
+            var reader = new FileReader();
+
+            var imgtag = document.getElementById("myimage");
+            imgtag.title = selectedFile.name;
+
+            reader.onload = function(event) {
+                imgtag.src = event.target.result;
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
+    </script>
     }

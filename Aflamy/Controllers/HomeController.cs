@@ -21,7 +21,6 @@ namespace Aflamy.Controllers
         {
             TempData["Current"] = "Index";
             IEnumerable<Movie> movies = moviesService.GetAll();
-
             foreach (Movie movie in movies)
             {
                 moviesService.SetIsFavotite(movie.MovieID);

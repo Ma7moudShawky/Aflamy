@@ -31,10 +31,10 @@
                 <span asp-validation-for="@Model.SelectedCategoriesIds" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <img src="~/Images/@Model.AddedMovie.Poster" class="img-fluid" width="150" />
+                <img src="~/Images/@Model.AddedMovie.Poster" class="img-fluid" width="150" id="myimage" />
                 <br />
                 <label asp-for="@Model.Posterimage" class="control-label"></label>
-                <input type="file" accept="image/*" asp-for="@Model.Posterimage" class="form-control" />
+                <input type="file" accept="image/*" asp-for="@Model.Posterimage" class="form-control UploadImg" />
                 <span asp-validation-for="@Model.Posterimage" class="text-danger"></span>
             </div>
             <br />
@@ -58,5 +58,21 @@
             $("#Posterimage").rules('remove', 'required');
             $("form").validate();
         });
+        let UploadInput = document.querySelector(".UploadImg");
+        UploadInput.addEventListener("change", onFileSelected);
+        
+        function onFileSelected(event) {
+            var selectedFile = event.target.files[0];
+            var reader = new FileReader();
+
+            var imgtag = document.getElementById("myimage");
+            imgtag.title = selectedFile.name;
+
+            reader.onload = function(event) {
+                imgtag.src = event.target.result;
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
     </script>
     }
